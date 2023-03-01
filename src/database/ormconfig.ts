@@ -9,9 +9,7 @@ import { RefreshToken1677579004336 } from './migrations/1677579004336-refresh_to
 
 const database = configuration().database;
 
-console.log(
-  database
-);
+console.log(database);
 
 const config = {
   type: 'postgres',

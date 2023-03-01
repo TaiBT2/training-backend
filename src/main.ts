@@ -1,4 +1,8 @@
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ValidationPipe,
+  VersioningType,
+} from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
@@ -13,10 +17,14 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
   app.useGlobalPipes(
     new ValidationPipe({
-      // whitelist: true,
+      whitelist: true,
+      transform: true,
     }),
   );
-
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+  app.setGlobalPrefix('/api');
   await app.listen(config.port);
   console.log('Starting on port ' + config.port);
 }

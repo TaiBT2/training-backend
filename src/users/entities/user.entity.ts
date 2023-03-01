@@ -43,14 +43,14 @@ export class User extends BaseEntity {
     type: 'timestamp',
     default: () => 'NOW()',
   })
-  createdAt: number;
+  createdAt: Date;
 
   @UpdateDateColumn({
     type: 'timestamp',
     default: () => 'NOW()',
     onUpdate: 'NOW()',
   })
-  updatedAt: number;
+  updatedAt: Date;
 
   constructor(partial: Partial<User>) {
     super();
