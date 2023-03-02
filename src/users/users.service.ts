@@ -24,8 +24,11 @@ export class UsersService extends BaseService<User, UserRepository> {
     super(usersRepository, 'users');
   }
 
-  async findOne(username: string): Promise<any | undefined> {
-    return this.users.find((user) => user.username === username);
+  async findOneByUsername(username: string): Promise<User | null> {
+    return this.findByOneBy({
+      username: username,
+      isActive: true,
+    });
   }
 
   async getPagination(take, page, keyword): Promise<IPagination<User>> {

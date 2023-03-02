@@ -3,7 +3,10 @@ import { Public } from './auth.decorator';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guard/local-auth.guard';
 
-@Controller('auth')
+@Controller({
+  version: '1',
+  path: 'auth',
+})
 export class AuthController {
   constructor(private authService: AuthService) {}
 

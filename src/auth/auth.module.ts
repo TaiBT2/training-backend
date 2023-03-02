@@ -10,6 +10,8 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm/dist';
 import { AccessToken } from './entities/access_token.entity';
 import { RefreshToken } from './entities/refresh_token.entity';
+import { AccessTokenRepository } from './repositories/access_token.repository';
+import { RefreshTokenRepository } from './repositories/refresh_token.repository';
 
 @Module({
   imports: [
@@ -22,7 +24,13 @@ import { RefreshToken } from './entities/refresh_token.entity';
     TypeOrmModule.forFeature([AccessToken, RefreshToken]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    AccessTokenRepository,
+    RefreshTokenRepository,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

@@ -1,19 +1,31 @@
+import { User } from 'src/users/entities/user.entity';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  BaseEntity,
+  OneToOne,
 } from 'typeorm';
 
 @Entity({
   name: 'access_tokens',
 })
-export class AccessToken {
+export class AccessToken extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ default: true })
+  @OneToOne(() => User)
+  user: User;
+
+  @Column('varchar', { default: '', nullable: true })
+  host: string;
+
+  @Column('varchar', { default: '', nullable: true })
+  device: string;
+
+  @Column('boolean', { default: true })
   isActive: boolean;
 
   @CreateDateColumn({
@@ -30,6 +42,7 @@ export class AccessToken {
   updatedAt: number;
 
   constructor(partial: Partial<AccessToken>) {
+    super();
     Object.assign(this, partial);
   }
 }

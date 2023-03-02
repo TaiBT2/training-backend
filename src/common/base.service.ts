@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   DeleteResult,
+  FindOptionsWhere,
   Repository,
   SelectQueryBuilder,
 } from 'typeorm';
@@ -33,6 +34,10 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
 
   findByIds(ids: [EntityId]): Promise<T[]> {
     return this.repository.findByIds(ids);
+  }
+
+  findByOneBy(where: FindOptionsWhere<T> | FindOptionsWhere<T>[]): Promise<T> {
+    return this.repository.findOneBy(where);
   }
 
   async store(data: any): Promise<any> {
