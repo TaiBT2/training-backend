@@ -1,8 +1,8 @@
 import {
   BaseEntity,
   DeleteResult,
-  FindOptionsWhere,
   Repository,
+  SelectQueryBuilder,
 } from 'typeorm';
 import { IBaseService } from './interface/i.base.interface';
 import { EntityId } from 'typeorm/repository/EntityId';
@@ -15,8 +15,10 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
   implements IBaseService<T>
 {
   protected readonly repository: R;
-  constructor(repository: R) {
+  protected readonly entityName: string;
+  constructor(repository: R, entityName: string) {
     this.repository = repository;
+    this.entityName = entityName;
   }
 
   index(): Promise<T[]> {
@@ -24,7 +26,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
   }
 
   findById(id: EntityId): Promise<T> {
-    return this.repository.findOneBy({
+    return this.repository.findOneByOrFail({
       id,
     } as any);
   }
@@ -34,14 +36,14 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
   }
 
   async store(data: any): Promise<any> {
-    const newRecord = await this.repository.create(data);
+    const newRecord = this.repository.create(data);
     const record = await this.repository.save(newRecord);
     return record;
   }
 
   async update(id: EntityId, data: any): Promise<T> {
     const record = await this.repository.findOneByOrFail({ id } as any);
-    const newRecord = await this.repository.create({ ...record, ...data });
+    const newRecord = this.repository.create({ ...record, ...data });
     await this.repository.save(newRecord);
     return this.findById(id);
   }
@@ -51,23 +53,22 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
   }
 
   async findByPagination(
-    query: any,
+    query: (queryBuilder: SelectQueryBuilder<T>) => void,
     pagination: IPaginationInput = {
       take: 10,
       page: 1,
     },
-    where?: FindOptionsWhere<T> | FindOptionsWhere<T>[],
   ): Promise<IPagination<T>> {
     const take = pagination?.take || 10;
     const page = pagination?.page || 1;
     const skip = (page - 1) * take;
-
-    const data = await this.repository.findAndCount({
-      where,
-      take: take,
-      skip: skip,
-    });
-    return this.paginateResponse(data, page, take);
+    const queryBuilder = this.repository.createQueryBuilder(this.entityName);
+    query(queryBuilder);
+    queryBuilder.addOrderBy(this.entityName + '.createdAt');
+    queryBuilder.take(take).skip(skip);
+    const result = await queryBuilder.getMany();
+    const total = await queryBuilder.getCount();
+    return this.paginateResponse([result, total], page, take);
   }
 
   paginateResponse(data, page, limit): IPagination<T> {
