@@ -15,6 +15,12 @@ export class User1677574663541 implements MigrationInterface {
           {
             name: 'username',
             type: 'varchar',
+            isUnique: true,
+          },
+          {
+            name: 'email',
+            type: 'varchar',
+            isUnique: true,
           },
           {
             name: 'password',
@@ -31,6 +37,7 @@ export class User1677574663541 implements MigrationInterface {
           {
             name: 'isActive',
             type: 'boolean',
+            default: true,
           },
           {
             name: 'createdAt',

@@ -73,4 +73,8 @@ export class User extends BaseEntity {
       this.password = await bcrypt.hash(this.password, salt);
     }
   }
+
+  isCorrectPassword(password: string): boolean {
+    return bcrypt.compareSync(password, this.password);
+  }
 }
