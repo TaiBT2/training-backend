@@ -7,10 +7,10 @@ import {
   Param,
   Query,
   ParseIntPipe,
+  NotFoundException,
 } from '@nestjs/common';
 import { Public } from 'src/auth/auth.decorator';
 import { IPagination } from 'src/common/interface/i.pagination.interface';
-import { ILike } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -30,12 +30,33 @@ export class UsersController {
     @Query('keyword') keyword: string,
   ): Promise<IPagination<User>> {
     return this.usersService.findByPagination(
-      null,
-      { take: take, page: page },
+      (queryBuilder) => {
+        queryBuilder.where(
+          `
+          users.username ILIKE :keyword or
+          users.email ILIKE :keyword or
+          users.firstName ILIKE :keyword
+          `,
+          {
+            keyword: `%${keyword}%`,
+          },
+        );
+      },
       {
-        username: ILike('%' + keyword + '%'),
+        take: take,
+        page: page,
       },
     );
+  }
+
+  @Public()
+  @Get(':id')
+  async getUserById(@Param('id') id: number): Promise<User> {
+    try {
+      return await this.usersService.findById(id);
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
   }
 
   @Public()
@@ -46,7 +67,11 @@ export class UsersController {
 
   @Public()
   @Put(':id')
-  update(@Param('id') id: number, @Body() createUserDto: CreateUserDto) {
-    return this.usersService.update(id, createUserDto);
+  async update(@Param('id') id: number, @Body() createUserDto: CreateUserDto) {
+    try {
+      return await this.usersService.update(id, createUserDto);
+    } catch (error) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

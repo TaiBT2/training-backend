@@ -1,5 +1,7 @@
 import {
+  BadRequestException,
   ClassSerializerInterceptor,
+  ValidationError,
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
@@ -7,11 +9,13 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { configuration } from './config/configuration';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = configuration();
   const reflector = new Reflector();
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   app.useGlobalGuards(new JwtAuthGuard(reflector));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
@@ -19,6 +23,9 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        return new BadRequestException(validationErrors);
+      },
     }),
   );
   app.enableVersioning({
