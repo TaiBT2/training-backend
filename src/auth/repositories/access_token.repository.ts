@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { AccessToken } from '../entities/access_token.entity';
-import { IInputCreateAccessToken } from '../interface/access_token.interface';
+import { IInputCreateAccessToken } from '../interface/token.interface';
 
 export class AccessTokenRepository extends Repository<AccessToken> {
   constructor(
@@ -21,9 +21,20 @@ export class AccessTokenRepository extends Repository<AccessToken> {
     payload: IInputCreateAccessToken,
   ): Promise<AccessToken> {
     const accessToken = this.accessTokenRepository.create({
-      user,
       ...payload,
+      user,
     });
     return this.accessTokenRepository.save(accessToken);
+  }
+
+  async findOneTokenById(id: number): Promise<any> {
+    return this.accessTokenRepository.findOneOrFail({
+      relations: ['user'],
+      where: { id },
+    });
+  }
+
+  async destroy(id: number): Promise<any> {
+    return this.accessTokenRepository.delete({ id });
   }
 }

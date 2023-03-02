@@ -58,6 +58,15 @@ export class RefreshToken1677579004336 implements MigrationInterface {
         onDelete: 'CASCADE',
       }),
     );
+    await queryRunner.createForeignKey(
+      'refresh_tokens',
+      new TableForeignKey({
+        columnNames: ['accessTokenId'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'access_tokens',
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -65,7 +74,11 @@ export class RefreshToken1677579004336 implements MigrationInterface {
     const foreignKey = table.foreignKeys.find(
       (fk) => fk.columnNames.indexOf('userId') !== -1,
     );
+    const foreignKeyAccessToken = table.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf('accessTokenId') !== -1,
+    );
     await queryRunner.dropForeignKey('refresh_tokens', foreignKey);
+    await queryRunner.dropForeignKey('refresh_tokens', foreignKeyAccessToken);
     await queryRunner.dropTable('refresh_tokens');
   }
 }

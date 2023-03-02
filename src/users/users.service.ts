@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BaseService } from 'src/common/base.service';
 import { IPagination } from 'src/common/interface/i.pagination.interface';
 import { SelectQueryBuilder } from 'typeorm';
+import { EntityId } from 'typeorm/repository/EntityId';
 import { User } from './entities/user.entity';
 import { UserRepository } from './user.repository';
 
@@ -29,6 +30,10 @@ export class UsersService extends BaseService<User, UserRepository> {
       username: username,
       isActive: true,
     });
+  }
+
+  async findActiveUserById(id: EntityId): Promise<User | null> {
+    return this.usersRepository.findActiveUserById(id);
   }
 
   async getPagination(take, page, keyword): Promise<IPagination<User>> {

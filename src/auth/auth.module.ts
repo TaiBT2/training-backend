@@ -19,7 +19,7 @@ import { RefreshTokenRepository } from './repositories/refresh_token.repository'
     PassportModule,
     JwtModule.register({
       secret: configuration().secret,
-      signOptions: { expiresIn: '60s', algorithm: 'HS256' },
+      signOptions: { expiresIn: '10d', algorithm: 'HS256' },
     }),
     TypeOrmModule.forFeature([AccessToken, RefreshToken]),
   ],

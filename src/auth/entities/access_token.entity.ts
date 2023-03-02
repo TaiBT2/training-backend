@@ -6,7 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  OneToOne,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity({
@@ -16,7 +17,8 @@ export class AccessToken extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => User)
+  @ManyToOne(() => User, (user) => user.id)
+  @JoinColumn()
   user: User;
 
   @Column('varchar', { default: '', nullable: true })
