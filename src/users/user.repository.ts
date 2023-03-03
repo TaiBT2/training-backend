@@ -1,9 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
+import { DATABASE_NAMES } from 'src/constants';
 import { Repository } from 'typeorm';
 import { EntityId } from 'typeorm/repository/EntityId';
 import { User } from './entities/user.entity';
 
 export class UserRepository extends Repository<User> {
+  private name: string;
+
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -13,6 +16,7 @@ export class UserRepository extends Repository<User> {
       userRepository.manager,
       userRepository.queryRunner,
     );
+    this.name = DATABASE_NAMES.USERS;
   }
 
   getInactiveUsers(): Promise<User[]> {
@@ -22,8 +26,8 @@ export class UserRepository extends Repository<User> {
   }
 
   findActiveUserById(id: EntityId): Promise<User> {
-    return this.createQueryBuilder('users')
-      .where('users.id = :id and users.isActive = :active', {
+    return this.createQueryBuilder(this.name)
+      .where(`${this.name}.id = :id and ${this.name}.isActive = :active`, {
         active: true,
         id,
       })

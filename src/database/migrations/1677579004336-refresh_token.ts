@@ -1,3 +1,4 @@
+import { DATABASE_NAMES } from 'src/constants';
 import {
   MigrationInterface,
   QueryRunner,
@@ -58,7 +59,7 @@ export class RefreshToken1677579004336 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['userId'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'users',
+        referencedTableName: DATABASE_NAMES.USERS,
         onDelete: 'CASCADE',
       }),
     );
