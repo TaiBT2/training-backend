@@ -12,5 +12,5 @@ export interface IBaseService<T> {
 
   update(id: EntityId, data: any): Promise<T>;
 
-  delete(id: EntityId): Promise<DeleteResult>;
+  delete(id: EntityId[], soft?: boolean): Promise<DeleteResult>;
 }

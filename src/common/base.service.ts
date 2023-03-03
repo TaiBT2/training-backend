@@ -53,8 +53,11 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
     return this.findById(id);
   }
 
-  delete(id: EntityId): Promise<DeleteResult> {
-    return this.repository.delete(id);
+  delete(id: EntityId[], soft = true): Promise<DeleteResult> {
+    if (soft) {
+      return this.repository.softDelete(id as any);
+    }
+    return this.repository.delete(id as any);
   }
 
   async findByPagination(

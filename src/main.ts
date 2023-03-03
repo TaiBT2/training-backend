@@ -10,6 +10,7 @@ import { AppModule } from './app.module';
 import { JwtAuthGuard } from './auth/guard/jwt-auth.guard';
 import { configuration } from './config/configuration';
 import { useContainer } from 'class-validator';
+import { unset } from 'lodash';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,7 @@ async function bootstrap() {
       whitelist: true,
       // transform: true,
       exceptionFactory: (validationErrors: ValidationError[] = []) => {
+        validationErrors.forEach((err) => unset(err, 'target'));
         return new BadRequestException(validationErrors);
       },
     }),
