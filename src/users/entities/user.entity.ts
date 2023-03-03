@@ -8,6 +8,7 @@ import {
   BaseEntity,
   BeforeInsert,
   BeforeUpdate,
+  DeleteDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
@@ -54,6 +55,10 @@ export class User extends BaseEntity {
     onUpdate: 'NOW()',
   })
   updatedAt: Date;
+
+  @DeleteDateColumn()
+  @Exclude()
+  deletedAt?: Date;
 
   constructor(partial: Partial<User>) {
     super();

@@ -50,6 +50,11 @@ export class User1677574663541 implements MigrationInterface {
             default: 'NOW()',
             onUpdate: 'NOW()',
           },
+          {
+            name: 'deletedAt',
+            type: 'timestamp',
+            isNullable: true,
+          },
         ],
       }),
       true,
