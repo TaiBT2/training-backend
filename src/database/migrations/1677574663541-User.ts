@@ -1,9 +1,10 @@
+import { DATABASE_NAMES } from 'src/constants';
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 export class User1677574663541 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'users',
+        name: DATABASE_NAMES.USERS,
         columns: [
           {
             name: 'id',
@@ -60,7 +61,7 @@ export class User1677574663541 implements MigrationInterface {
       true,
     );
     await queryRunner.createIndex(
-      'users',
+      DATABASE_NAMES.USERS,
       new TableIndex({
         name: 'users_username',
         columnNames: ['username'],
@@ -69,6 +70,6 @@ export class User1677574663541 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users');
+    await queryRunner.dropTable(DATABASE_NAMES.USERS);
   }
 }

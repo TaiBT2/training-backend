@@ -11,9 +11,10 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { DATABASE_NAMES } from 'src/constants';
 
 @Entity({
-  name: 'users',
+  name: DATABASE_NAMES.USERS,
 })
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()

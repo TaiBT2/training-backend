@@ -4,7 +4,6 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { isEmpty } from 'lodash';
 
 @ValidatorConstraint({ name: 'isUnique', async: true })
 export class UniqueValidator implements ValidatorConstraintInterface {
