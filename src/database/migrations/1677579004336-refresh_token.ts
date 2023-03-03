@@ -27,6 +27,10 @@ export class RefreshToken1677579004336 implements MigrationInterface {
             type: 'int',
           },
           {
+            name: 'accessTokenId',
+            type: 'int',
+          },
+          {
             name: 'host',
             type: 'varchar',
           },
