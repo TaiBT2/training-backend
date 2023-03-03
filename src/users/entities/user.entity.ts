@@ -19,13 +19,13 @@ export class User extends BaseEntity {
   id: number;
 
   @Column({
-    // unique: true,
+    unique: true,
   })
   username: string;
 
   @Column({
     nullable: true,
-    // unique: true,
+    unique: true,
   })
   email: string;
 

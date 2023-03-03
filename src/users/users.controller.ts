@@ -6,10 +6,10 @@ import {
   Put,
   Param,
   Query,
-  ParseIntPipe,
   NotFoundException,
 } from '@nestjs/common';
 import { Public } from 'src/auth/auth.decorator';
+import { PaginationParamsDto } from 'src/common/dto/pagination.dto';
 import { IPagination } from 'src/common/interface/i.pagination.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
@@ -25,26 +25,28 @@ export class UsersController {
   @Public()
   @Get()
   async getAllUsers(
-    @Query('take', new ParseIntPipe()) take: number,
-    @Query('page', new ParseIntPipe()) page: number,
+    @Query() paginationParams: PaginationParamsDto,
     @Query('keyword') keyword: string,
   ): Promise<IPagination<User>> {
+    console.log(paginationParams);
     return this.usersService.findByPagination(
       (queryBuilder) => {
-        queryBuilder.where(
-          `
-          users.username ILIKE :keyword or
-          users.email ILIKE :keyword or
-          users.firstName ILIKE :keyword
-          `,
-          {
-            keyword: `%${keyword}%`,
-          },
-        );
+        if (keyword) {
+          queryBuilder.where(
+            `
+            users.username ILIKE :keyword or
+            users.email ILIKE :keyword or
+            users.firstName ILIKE :keyword
+            `,
+            {
+              keyword: `%${keyword}%`,
+            },
+          );
+        }
       },
       {
-        take: take,
-        page: page,
+        take: paginationParams.take,
+        page: paginationParams.page,
       },
     );
   }
