@@ -1,5 +1,5 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../constants';
 import { Repository } from 'typeorm';
 import { EntityId } from 'typeorm/repository/EntityId';
 import { User } from './entities/user.entity';

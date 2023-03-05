@@ -67,7 +67,7 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
       page: 1,
     },
   ): Promise<IPagination<T>> {
-    const take = pagination?.take || 10;
+    const take = (pagination?.take || 10) > 100 ? 100 : pagination?.take || 10;
     const page = pagination?.page || 1;
     const skip = (page - 1) * take;
     const queryBuilder = this.repository.createQueryBuilder(this.entityName);

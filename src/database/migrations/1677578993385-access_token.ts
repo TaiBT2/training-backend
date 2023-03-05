@@ -1,4 +1,4 @@
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../../constants';
 import {
   MigrationInterface,
   QueryRunner,

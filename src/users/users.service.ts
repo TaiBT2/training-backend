@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BaseService } from 'src/common/base.service';
 import { IPagination } from 'src/common/interface/i.pagination.interface';
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../constants';
 import { SelectQueryBuilder } from 'typeorm';
 import { EntityId } from 'typeorm/repository/EntityId';
 import { User } from './entities/user.entity';

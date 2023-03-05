@@ -11,7 +11,7 @@ import {
   DeleteDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../../constants';
 
 @Entity({
   name: DATABASE_NAMES.USERS,
@@ -40,6 +40,9 @@ export class User extends BaseEntity {
 
   @Column()
   lastName: string;
+
+  @Column('text', { nullable: true, default: '' })
+  avatar: string;
 
   @Column({ default: true })
   isActive: boolean;

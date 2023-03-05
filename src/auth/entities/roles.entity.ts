@@ -1,4 +1,4 @@
-import { User } from '../../users/entities/user.entity';
+import { Exclude } from 'class-transformer';
 import {
   Entity,
   Column,
@@ -6,29 +6,31 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-  JoinColumn,
-  ManyToOne,
+  ManyToMany,
+  DeleteDateColumn,
+  JoinTable,
 } from 'typeorm';
+import { Permission } from './permissions.entity';
 
 @Entity({
   name: 'access_tokens',
 })
-export class AccessToken extends BaseEntity {
+export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id)
-  @JoinColumn()
-  user: User;
+  @Column('varchar')
+  name: string;
 
-  @Column('varchar', { default: '', nullable: true })
-  host: string;
-
-  @Column('varchar', { default: '', nullable: true })
-  device: string;
+  @Column('longtext', { default: '', nullable: true })
+  description: string;
 
   @Column('boolean', { default: true })
   isActive: boolean;
+
+  @ManyToMany(() => Permission)
+  @JoinTable()
+  permissions: Permission[];
 
   @CreateDateColumn({
     type: 'timestamp',
@@ -43,7 +45,11 @@ export class AccessToken extends BaseEntity {
   })
   updatedAt: number;
 
-  constructor(partial: Partial<AccessToken>) {
+  @DeleteDateColumn()
+  @Exclude()
+  deletedAt?: Date;
+
+  constructor(partial: Partial<Role>) {
     super();
     Object.assign(this, partial);
   }
