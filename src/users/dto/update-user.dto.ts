@@ -8,7 +8,7 @@ import {
   MaxLength,
   Validate,
 } from 'class-validator';
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../../constants';
 import { UniqueValidator } from 'src/validator/IsUnique.validator';
 import { CreateUserDto } from './create-user.dto';
 

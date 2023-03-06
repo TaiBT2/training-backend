@@ -1,38 +1,41 @@
 /* eslint-disable prettier/prettier */
 
 import { configuration } from '../config/configuration';
-import * as path from 'path';
 import { DataSourceOptions, DataSource } from 'typeorm';
 import { User1677574663541 } from './migrations/1677574663541-User';
 import { AccessToken1677578993385 } from './migrations/1677578993385-access_token';
 import { RefreshToken1677579004336 } from './migrations/1677579004336-refresh_token';
+import { RoleAndPermisison1677900502169 } from './migrations/1677900502169-role_and_permisison';
+import { SeederOptions } from 'typeorm-extension';
+import { User } from '../users/entities/user.entity';
+import UserSeeder from './seed/user.seeder';
+import UserFactory from './seed/user.factory';
+import PermissionSeeder from './seed/permission.seeder';
+import { Permission } from '../auth/entities/permissions.entity';
+import { Role } from '../auth/entities/roles.entity';
+import RoleSeeder from './seed/role.seeder';
 
 const database = configuration().database;
 
 console.log(database);
 
-const config = {
+const config: DataSourceOptions & SeederOptions = {
   type: 'postgres',
   ...database,
   synchronize: true,
   logging: false,
-  entities: [
-    path.join(__dirname, '..', '**', 'entities', '**', '*.*'),
-    path.join(__dirname, '..', 'entities', '**', '*.*'),
-    path.join(__dirname, '..', 'entities', '*.*'),
-  ],
+  entities: [User, Permission, Role],
+  seeds: [UserSeeder, PermissionSeeder, RoleSeeder],
+  factories: [UserFactory],
   migrations: [
     User1677574663541,
     AccessToken1677578993385,
     RefreshToken1677579004336,
+    RoleAndPermisison1677900502169,
   ],
-  cli: {
-    entitiesDir: path.join(__dirname, '..', 'entities'),
-    migrationsDir: path.join(__dirname, 'migrations', '*.*'),
-  },
   migrationsTableName: 'migrations_table',
 } as DataSourceOptions;
 
 const datasource = new DataSource(config); // config is one that is defined in datasource.config.ts file
-datasource.initialize();
 export default datasource;
+export { config };

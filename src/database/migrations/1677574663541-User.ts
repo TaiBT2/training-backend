@@ -1,4 +1,4 @@
-import { DATABASE_NAMES } from 'src/constants';
+import { DATABASE_NAMES } from '../../constants';
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 export class User1677574663541 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -34,6 +34,11 @@ export class User1677574663541 implements MigrationInterface {
           {
             name: 'lastName',
             type: 'varchar',
+          },
+          {
+            name: 'avatar',
+            type: 'text',
+            isNullable: true,
           },
           {
             name: 'isActive',
