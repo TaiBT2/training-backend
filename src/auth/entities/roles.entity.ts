@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import { DATABASE_NAMES } from '../../constants';
 import {
   Entity,
   Column,
@@ -13,7 +14,7 @@ import {
 import { Permission } from './permissions.entity';
 
 @Entity({
-  name: 'access_tokens',
+  name: DATABASE_NAMES.ROLES,
 })
 export class Role extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -22,8 +23,12 @@ export class Role extends BaseEntity {
   @Column('varchar')
   name: string;
 
-  @Column('longtext', { default: '', nullable: true })
+  @Column('text', { default: '', nullable: true })
   description: string;
+
+  @Column('boolean', { default: false })
+  @Exclude()
+  isRoot: boolean;
 
   @Column('boolean', { default: true })
   isActive: boolean;

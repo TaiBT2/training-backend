@@ -25,7 +25,7 @@
     "migration:create": "yarn typeorm migration:create",
     "db:create": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:create",
     "db:drop": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:drop",
-    "seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed"
+    "seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed -d src/database/ormconfig.ts"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

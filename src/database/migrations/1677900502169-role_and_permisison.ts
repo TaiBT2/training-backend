@@ -28,6 +28,17 @@ export class RoleAndPermisison1677900502169 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: 'group',
+            type: 'varchar(100)',
+            isNullable: true,
+            default: null,
+          },
+          {
+            name: 'isGroup',
+            type: 'boolean',
+            default: false,
+          },
+          {
             name: 'createdAt',
             type: 'timestamp',
             default: 'NOW()',
@@ -61,6 +72,11 @@ export class RoleAndPermisison1677900502169 implements MigrationInterface {
             name: 'description',
             type: 'text',
             isNullable: true,
+          },
+          {
+            name: 'isRoot',
+            type: 'boolean',
+            default: false,
           },
           {
             name: 'isActive',
@@ -127,6 +143,7 @@ export class RoleAndPermisison1677900502169 implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: DATABASE_NAMES.PERMISSIONS,
         onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       }),
     );
     await queryRunner.createForeignKey(
@@ -136,6 +153,7 @@ export class RoleAndPermisison1677900502169 implements MigrationInterface {
         referencedColumnNames: ['id'],
         referencedTableName: DATABASE_NAMES.ROLES,
         onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       }),
     );
   }

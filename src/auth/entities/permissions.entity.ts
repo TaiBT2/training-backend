@@ -13,13 +13,19 @@ import {
 })
 export class Permission extends BaseEntity {
   @PrimaryColumn({ type: 'varchar' })
-  id: number;
+  id: string;
 
   @Column('varchar')
   name: string;
 
   @Column('varchar', { default: '', nullable: true })
   description: string;
+
+  @Column('varchar', { default: null, nullable: true })
+  group: string;
+
+  @Column('boolean', { default: false })
+  isGroup: boolean;
 
   @CreateDateColumn({
     type: 'timestamp',

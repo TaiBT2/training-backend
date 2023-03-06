@@ -9,7 +9,7 @@ export default class UserSeeder implements Seeder {
   ): Promise<any> {
     const repository = dataSource.getRepository(User);
     try {
-      const users = await repository.create([
+      const users = repository.create([
         {
           firstName: 'Root',
           lastName: 'User',
@@ -32,10 +32,10 @@ export default class UserSeeder implements Seeder {
     }
     // ---------------------------------------------------
 
-    const userFactory = await factoryManager.get(User);
+    const userFactory = factoryManager.get(User);
 
-    // // save 10000 factory generated entities, to the database
-    const resultFactory = await userFactory.saveMany(10000);
+    // // save 5 factory generated entities, to the database
+    const resultFactory = await userFactory.saveMany(5);
     console.log('Seeder Factory' + resultFactory.length + ' users');
   }
 }

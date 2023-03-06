@@ -11,15 +11,19 @@ import {
   IPagination,
   IPaginationInput,
 } from './interface/i.pagination.interface';
+import { SortQuery } from './type/sort.type';
 
 export class BaseService<T extends BaseEntity, R extends Repository<T>>
   implements IBaseService<T>
 {
   protected readonly repository: R;
   protected readonly entityName: string;
+  private readonly keyOfEntity: string[];
   constructor(repository: R, entityName: string) {
     this.repository = repository;
     this.entityName = entityName;
+    const entity: any = repository.create();
+    this.keyOfEntity = entity.sortKeys || [];
   }
 
   index(): Promise<T[]> {
@@ -66,13 +70,24 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
       take: 10,
       page: 1,
     },
+    sorts: SortQuery[] = [],
   ): Promise<IPagination<T>> {
     const take = (pagination?.take || 10) > 100 ? 100 : pagination?.take || 10;
     const page = pagination?.page || 1;
     const skip = (page - 1) * take;
     const queryBuilder = this.repository.createQueryBuilder(this.entityName);
     query(queryBuilder);
-    queryBuilder.addOrderBy(this.entityName + '.createdAt');
+    const sortsQuery = sorts.filter((sort) =>
+      this.keyOfEntity.includes(sort.field),
+    );
+    sortsQuery.forEach((sort) =>
+      queryBuilder.addOrderBy(
+        `${this.entityName}.${sort.field}`,
+        sort.direction,
+      ),
+    );
+    if (!sortsQuery.map((sort) => sort.field).includes('createdAt'))
+      queryBuilder.addOrderBy(this.entityName + '.createdAt');
     queryBuilder.take(take).skip(skip);
     const result = await queryBuilder.getMany();
     const total = await queryBuilder.getCount();

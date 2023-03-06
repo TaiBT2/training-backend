@@ -74,6 +74,12 @@ export class User extends BaseEntity {
     return `${this.firstName} ${this.lastName}`;
   }
 
+  @Exclude()
+  @Expose()
+  get sortKeys(): string[] {
+    return ['id', 'username', 'email', 'firstName', 'lastName', 'createdAt'];
+  }
+
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {

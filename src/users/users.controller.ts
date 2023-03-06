@@ -50,6 +50,7 @@ export class UsersController {
         take: paginationParams.take,
         page: paginationParams.page,
       },
+      paginationParams.sorts,
     );
   }
 

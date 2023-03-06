@@ -10,6 +10,10 @@ import { SeederOptions } from 'typeorm-extension';
 import { User } from '../users/entities/user.entity';
 import UserSeeder from './seed/user.seeder';
 import UserFactory from './seed/user.factory';
+import PermissionSeeder from './seed/permission.seeder';
+import { Permission } from '../auth/entities/permissions.entity';
+import { Role } from '../auth/entities/roles.entity';
+import RoleSeeder from './seed/role.seeder';
 
 const database = configuration().database;
 
@@ -20,8 +24,8 @@ const config: DataSourceOptions & SeederOptions = {
   ...database,
   synchronize: true,
   logging: false,
-  entities: [User],
-  seeds: [UserSeeder],
+  entities: [User, Permission, Role],
+  seeds: [UserSeeder, PermissionSeeder, RoleSeeder],
   factories: [UserFactory],
   migrations: [
     User1677574663541,
