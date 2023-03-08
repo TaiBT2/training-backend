@@ -12,6 +12,14 @@ import { AccessToken } from './entities/access_token.entity';
 import { RefreshToken } from './entities/refresh_token.entity';
 import { AccessTokenRepository } from './repositories/access_token.repository';
 import { RefreshTokenRepository } from './repositories/refresh_token.repository';
+import { PermissionRepository } from './repositories/permission.repository';
+import { PermissionController } from './permission.controller';
+import { PermissionService } from './permission.service';
+import { Permission } from './entities/permissions.entity';
+import { Role } from './entities/roles.entity';
+import { RoleController } from './role.controller';
+import { RoleRepository } from './repositories/role.repository';
+import { RoleService } from './role.service';
 
 @Module({
   imports: [
@@ -21,15 +29,19 @@ import { RefreshTokenRepository } from './repositories/refresh_token.repository'
       secret: configuration().secret,
       signOptions: { expiresIn: '10d', algorithm: 'HS256' },
     }),
-    TypeOrmModule.forFeature([AccessToken, RefreshToken]),
+    TypeOrmModule.forFeature([AccessToken, RefreshToken, Permission, Role]),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, PermissionController, RoleController],
   providers: [
     AuthService,
+    PermissionService,
+    RoleService,
     LocalStrategy,
     JwtStrategy,
     AccessTokenRepository,
     RefreshTokenRepository,
+    PermissionRepository,
+    RoleRepository,
   ],
   exports: [AuthService],
 })
