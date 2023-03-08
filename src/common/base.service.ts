@@ -2,6 +2,7 @@ import {
   BaseEntity,
   DeleteResult,
   FindOptionsWhere,
+  In,
   Repository,
   SelectQueryBuilder,
 } from 'typeorm';
@@ -36,8 +37,12 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
     } as any);
   }
 
-  findByIds(ids: [EntityId]): Promise<T[]> {
-    return this.repository.findByIds(ids);
+  findByIds(ids: EntityId[] = []): Promise<T[]> {
+    return this.repository.find({
+      where: {
+        id: In(ids),
+      },
+    } as any);
   }
 
   findByOneBy(where: FindOptionsWhere<T> | FindOptionsWhere<T>[]): Promise<T> {

@@ -16,8 +16,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = configuration();
   const reflector = new Reflector();
+  app.enableCors({
+    origin: true,
+    methods: '*',
+    credentials: true,
+  });
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-
   app.useGlobalGuards(new JwtAuthGuard(reflector));
   app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
   app.useGlobalPipes(

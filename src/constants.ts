@@ -4,7 +4,7 @@ export const DATABASE_NAMES = {
   REFRESH_TOKENS: 'refresh_tokens',
   PERMISSIONS: 'permissions',
   ROLES: 'roles',
-  ROLE_PERMISSIONS_PERMISSIONS: 'role_permissions_permissions',
+  ROLE_PERMISSIONS_PERMISSIONS: 'roles_permissions_permissions',
 };
 
 export const PERMISSION_ID = {
