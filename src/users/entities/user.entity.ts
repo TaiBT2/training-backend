@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { DATABASE_NAMES } from '../../constants';
+import * as moment from 'moment';
 
 @Entity({
   name: DATABASE_NAMES.USERS,
@@ -44,6 +45,12 @@ export class User extends BaseEntity {
   @Column('text', { nullable: true, default: '' })
   avatar: string;
 
+  @CreateDateColumn({
+    type: 'timestamp',
+    nullable: true,
+  })
+  bod: Date;
+
   @Column({ default: true })
   isActive: boolean;
 
@@ -74,10 +81,33 @@ export class User extends BaseEntity {
     return `${this.firstName} ${this.lastName}`;
   }
 
+  @Expose()
+  get age(): number | null {
+    if (!this.bod) return null;
+    return moment().diff(moment(this.bod), 'year', false);
+  }
+
   @Exclude()
   @Expose()
   get sortKeys(): string[] {
-    return ['id', 'username', 'email', 'firstName', 'lastName', 'createdAt'];
+    return [
+      'id',
+      'username',
+      'email',
+      'firstName',
+      'lastName',
+      'createdAt',
+      'age',
+      'bod',
+    ];
+  }
+
+  @Exclude()
+  @Expose()
+  get transformSortKeys(): any {
+    return {
+      age: () => 'bod',
+    };
   }
 
   @BeforeInsert()

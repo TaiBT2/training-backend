@@ -1,6 +1,8 @@
 import {
+  IsDateString,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   Validate,
@@ -31,4 +33,8 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MaxLength(255)
   lastName: string;
+
+  @IsOptional()
+  @IsDateString()
+  bod: Date;
 }

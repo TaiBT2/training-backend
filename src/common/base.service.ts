@@ -12,6 +12,7 @@ import {
   IPaginationInput,
 } from './interface/i.pagination.interface';
 import { SortQuery } from './type/sort.type';
+import { uniqBy } from 'lodash';
 
 export class BaseService<T extends BaseEntity, R extends Repository<T>>
   implements IBaseService<T>
@@ -19,11 +20,13 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
   protected readonly repository: R;
   protected readonly entityName: string;
   private readonly keyOfEntity: string[];
+  private readonly transformKeyOfEntity: string[];
   constructor(repository: R, entityName: string) {
     this.repository = repository;
     this.entityName = entityName;
     const entity: any = repository.create();
     this.keyOfEntity = entity.sortKeys || [];
+    this.transformKeyOfEntity = entity.transformSortKeys || null;
   }
 
   index(): Promise<T[]> {
@@ -77,7 +80,12 @@ export class BaseService<T extends BaseEntity, R extends Repository<T>>
     const skip = (page - 1) * take;
     const queryBuilder = this.repository.createQueryBuilder(this.entityName);
     query(queryBuilder);
-    const sortsQuery = sorts.filter((sort) =>
+    sorts.forEach((sort) => {
+      const func = this.transformKeyOfEntity?.[sort.field];
+      if (!func) return;
+      sort.field = func();
+    });
+    const sortsQuery = uniqBy(sorts, (it) => it.field).filter((sort) =>
       this.keyOfEntity.includes(sort.field),
     );
     sortsQuery.forEach((sort) =>

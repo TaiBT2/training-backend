@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsDateString,
   IsEmail,
   IsInt,
   IsNotEmpty,
@@ -41,4 +42,8 @@ export class UpdateUserDto extends CreateUserDto {
   @IsOptional()
   @MaxLength(255)
   lastName: string;
+
+  @IsOptional()
+  @IsDateString()
+  bod: Date;
 }
