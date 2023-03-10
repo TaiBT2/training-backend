@@ -33,7 +33,7 @@ export class Role extends BaseEntity {
   @Column('boolean', { default: true })
   isActive: boolean;
 
-  @ManyToMany(() => Permission)
+  @ManyToMany(() => Permission, { onDelete: 'CASCADE', cascade: true })
   @JoinTable()
   permissions: Permission[];
 
