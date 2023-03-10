@@ -36,5 +36,5 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsDateString()
-  bod: Date;
+  dob: Date;
 }

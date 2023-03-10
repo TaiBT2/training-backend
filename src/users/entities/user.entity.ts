@@ -49,7 +49,7 @@ export class User extends BaseEntity {
     type: 'timestamp',
     nullable: true,
   })
-  bod: Date;
+  dob: Date;
 
   @Column({ default: true })
   isActive: boolean;
@@ -83,8 +83,8 @@ export class User extends BaseEntity {
 
   @Expose()
   get age(): number | null {
-    if (!this.bod) return null;
-    return moment().diff(moment(this.bod), 'year', false);
+    if (!this.dob) return null;
+    return moment().diff(moment(this.dob), 'year', false);
   }
 
   @Exclude()
@@ -98,7 +98,7 @@ export class User extends BaseEntity {
       'lastName',
       'createdAt',
       'age',
-      'bod',
+      'dob',
     ];
   }
 
@@ -106,7 +106,7 @@ export class User extends BaseEntity {
   @Expose()
   get transformSortKeys(): any {
     return {
-      age: () => 'bod',
+      age: () => 'dob',
     };
   }
 

@@ -45,5 +45,5 @@ export class UpdateUserDto extends CreateUserDto {
 
   @IsOptional()
   @IsDateString()
-  bod: Date;
+  dob: Date;
 }
