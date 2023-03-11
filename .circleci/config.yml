@@ -34,3 +34,6 @@ workflows:
           name: deploy-dev
           requires:
               - build
+          filters:
+            branches:
+              only: master
