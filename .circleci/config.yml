@@ -22,15 +22,15 @@ jobs:
     steps:
         - run:
             name: Deploy Over SSH
-            command: ssh $SSH_USER@$SSH_HOST "cd /var/www/v2 && ./script.sh"
+            command: ssh $SSH_USER@$SSH_HOST "cd /var/www/v2 && sh ./script.sh"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build:
     jobs:
-      - build
-      - deploy: 
-          name: deploy-dev
-          requires:
-              - build
+      - deploy
+#       - deploy: 
+#           name: deploy-dev
+#           requires:
+#               - build
