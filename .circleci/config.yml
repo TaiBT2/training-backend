@@ -28,9 +28,6 @@ jobs:
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-deploy-staging:
-    filters:
-      branches:
-        only: master
     jobs:
       - build:
           filters:
