@@ -30,7 +30,7 @@ workflows:
   build-deploy-staging:
     jobs:
       - build:
-        filters:
+          filters:
             branches:
               only: master
       - deploy: 
