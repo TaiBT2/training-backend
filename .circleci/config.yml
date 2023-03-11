@@ -29,8 +29,8 @@ jobs:
 workflows:
   build:
     jobs:
-      - deploy
-#       - deploy: 
-#           name: deploy-dev
-#           requires:
-#               - build
+      - build
+      - deploy: 
+          name: deploy-dev
+          requires:
+              - build
