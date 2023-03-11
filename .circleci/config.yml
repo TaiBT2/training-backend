@@ -29,7 +29,10 @@ jobs:
 workflows:
   build-deploy-staging:
     jobs:
-      - build
+      - build:
+        filters:
+            branches:
+              only: master
       - deploy: 
           name: deploy-dev
           requires:
