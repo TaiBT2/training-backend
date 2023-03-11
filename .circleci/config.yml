@@ -22,7 +22,7 @@ jobs:
     steps:
         - run:
             name: Deploy Over SSH
-            command: ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "source ~/.nvm/nvm.sh; && cd /var/www/v2/be && npm i && npm run build"
+            command: ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "source ~/.nvm/nvm.sh && cd /var/www/v2/be && npm i && npm run build"
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
