@@ -38,7 +38,9 @@ export class UsersController {
             `
             users.username ILIKE :keyword or
             users.email ILIKE :keyword or
-            users.firstName ILIKE :keyword
+            users.firstName ILIKE :keyword or
+            users.lastName ILIKE :keyword or
+            CONCAT(users.firstName || ' ' || users.lastName) ILIKE :keyword
             `,
             {
               keyword: `%${keyword}%`,
