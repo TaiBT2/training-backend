@@ -26,7 +26,7 @@ export class AuthController {
   }
 
   @Public()
-  @Post('/refresh_token')
+  @Post('/refresh-token')
   async refreshToken(
     @Body('refresh_token') refreshToken: string,
   ): Promise<ILoginResponse> {
