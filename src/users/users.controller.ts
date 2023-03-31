@@ -25,7 +25,6 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Public()
   @Get()
   async getAllUsers(
     @Query() paginationParams: PaginationParamsDto,
@@ -56,7 +55,6 @@ export class UsersController {
     );
   }
 
-  @Public()
   @Get(':id')
   async getUserById(@Param('id') id: number): Promise<User> {
     try {
@@ -66,13 +64,11 @@ export class UsersController {
     }
   }
 
-  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.store(createUserDto);
   }
 
-  @Public()
   @Put()
   async update(@Param('id') _id: number, @Body() createUserDto: UpdateUserDto) {
     try {
@@ -82,7 +78,6 @@ export class UsersController {
     }
   }
 
-  @Public()
   @Delete()
   async delete(@Body() body: DeleteUserDto) {
     try {
